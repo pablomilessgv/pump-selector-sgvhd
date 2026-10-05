@@ -1,0 +1,4 @@
+const assert=require('node:assert/strict');const {calculate,interpolate}=require('./app.js');
+const d={volume:12,hours:6,diameter:32,roughness:.007,length:100,k:3,equipment:0,lossMode:'manual',loss:5,level:20,elevation:5,pressure:0,depth:50,efficiency:45};
+assert.equal(calculate(d).q,2);assert.equal(calculate(d).head,30);assert.equal(calculate(d).immersion,30);assert.equal(calculate({...d,pressure:2}).head,50.4);assert.equal(calculate({...d,depth:70}).head,30);
+const small=calculate({...d,lossMode:'darcy'}),large=calculate({...d,lossMode:'darcy',diameter:40});assert.ok(small.losses>large.losses);assert.ok(small.losses>0);assert.equal(interpolate([[0,50],[2,30],[4,0]],1),40);assert.equal(interpolate([[0,50],[2,30]],3),null);console.log('8 comprobaciones hidráulicas y de interpolación: correctas.');
